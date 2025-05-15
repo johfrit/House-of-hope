@@ -1,0 +1,80 @@
+app HouseOfHope {
+  wasp: {
+    version: "^0.16.3"
+  },
+  title: "HouseOfHope",
+  client: {
+    rootComponent: import { Layout } from "@src/Layout.jsx",
+  },
+  auth: {
+    userEntity: User,
+    methods: {
+      usernameAndPassword: {}
+    },
+    onAuthFailedRedirectTo: "/login",
+    onAuthSucceededRedirectTo: "/"
+  },
+}
+
+route LoginRoute { path: "/login", to: LoginPage }
+page LoginPage {
+  component: import Login from "@src/pages/auth/Login.jsx"
+}
+route SignupRoute { path: "/signup", to: SignupPage }
+page SignupPage {
+  component: import Signup from "@src/pages/auth/Signup.jsx"
+}
+
+action createNeed {
+  fn: import { createNeed } from "@src/actions.js",
+  entities: [Need, Orphanage]
+}
+
+action updateNeed {
+  fn: import { updateNeed } from "@src/actions.js",
+  entities: [Need]
+}
+
+action deleteNeed {
+  fn: import { deleteNeed } from "@src/actions.js",
+  entities: [Need]
+}
+
+action markDonation {
+  fn: import { markDonation } from "@src/actions.js",
+  entities: [Donation, Need, Donor]
+}
+
+query getOrphanageNeeds {
+  fn: import { getOrphanageNeeds } from "@src/queries.js",
+  entities: [Need]
+}
+
+query getNearbyOrphanages {
+  fn: import { getNearbyOrphanages } from "@src/queries.js",
+  entities: [Orphanage]
+}
+
+route LandingRoute { path: "/", to: LandingPage }
+page LandingPage {
+  component: import LandingPage from "@src/pages/Landing.jsx",
+  authRequired: false
+}
+
+route OrphanageDashboardRoute { path: "/orphanage-dashboard", to: OrphanageDashboard }
+page OrphanageDashboard {
+  component: import OrphanageDashboard from "@src/pages/OrphanageDashboard.jsx",
+  authRequired: true
+}
+
+route DonorDashboardRoute { path: "/donor-dashboard", to: DonorDashboard }
+page DonorDashboard {
+  component: import DonorDashboard from "@src/pages/DonorDashboard.jsx",
+  authRequired: true
+}
+
+route MapRoute { path: "/map", to: MapPage }
+page MapPage {
+  component: import MapPage from "@src/pages/Map.jsx",
+  authRequired: true
+}
